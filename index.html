@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tuco</title>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #0a1a1a;
+        }
+        canvas {
+            max-width: 100%;
+            max-height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        const config = {
+            type: Phaser.AUTO,
+            width: 800,
+            height: 600,
+            backgroundColor: '#0a1a1a',
+            physics: {
+                default: 'arcade',
+                arcade: { gravity: { y: 0 } }
+            },
+            scene: {
+                preload: preload,
+                create: create,
+                update: update
+            }
+        };
+
+        const game = new Phaser.Game(config);
+        let title, description, discordButton;
+
+        function preload() {}
+
+        function create() {
+            title = this.add.text(400, 200, 'Tuco è in costruzione', {
+                fontSize: '48px',
+                fontFamily: 'monospace',
+                color: '#00ff00',
+                align: 'center',
+                padding: { x: 20, y: 10 }
+            }).setOrigin(0.5);
+
+            description = this.add.text(400, 300, 'Tuco è una startup pre-seed.\nFavoriamo progetti climate tech\nper rigenerare ecosistemi urbani, agricoli e marini.', {
+                fontSize: '16px',
+                fontFamily: 'monospace',
+                color: '#00cc00',
+                align: 'center'
+            }).setOrigin(0.5);
+
+            discordButton = this.add.text(400, 400, 'Entra nel nostro Discord', {
+                fontSize: '24px',
+                fontFamily: 'monospace',
+                color: '#ffffff',
+                backgroundColor: '#00aa00',
+                padding: { x: 16, y: 8 }
+            }).setOrigin(0.5).setInteractive()
+            .on('pointerover', function() { this.setTint(0x00ff00); })
+            .on('pointerout', function() { this.clearTint(); })
+            .on('pointerdown', function() {
+                window.open('https://discord.gg/AJh8WnxhAY', '_blank');
+            });
+
+            this.tweens.add({
+                targets: title,
+                alpha: 0.8,
+                yoyo: true,
+                repeat: -1,
+                duration: 1200,
+                ease: 'Sine.easeInOut'
+            });
+        }
+
+        function update() {}
+    </script>
+</body>
+</html>
