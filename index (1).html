@@ -46,17 +46,23 @@
     }
 
     function create() {
-      particles = this.add.particles('');
-      emitter = particles.createEmitter({
-        speed: { min: 20, max: 60 },
-        scale: { start: 0.3, end: 0 },
-        quantity: 1,
-        blendMode: 'ADD',
-        lifespan: { min: 800, max: 1200 },
-        tint: [0x2E8B57, 0x3CB371],
-        frequency: 100,
-        alpha: { start: 0.4, end: 0 }
-      });
+  // title, description e button come prima…
+
+  // elimina tutto il blocco emitter/tweens relativo ai particles
+  // e lascia solo l’animazione neon del titolo
+  this.tweens.add({
+    targets: title,
+    alpha: 0.8,
+    yoyo: true,
+    repeat: -1,
+    duration: 1200,
+    ease: 'Sine.easeInOut',
+    onUpdate: () => {
+      title.setShadow(0, 0, '#00ff00', 5 + Math.random() * 5, true, true);
+    }
+  });
+}
+
 
       title = this.add.text(400, 160, 'Tuco', {
         fontSize: '72px',
