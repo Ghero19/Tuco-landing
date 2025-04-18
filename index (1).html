@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tuco - Climate Tech Startup</title>
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #0f1f1f;
+    }
+    canvas {
+      max-width: 100%;
+      max-height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    const config = {
+      type: Phaser.AUTO,
+      width: 800,
+      height: 600,
+      backgroundColor: '#0f1f1f',
+      physics: {
+        default: 'arcade',
+        arcade: { gravity: { y: 0 } }
+      },
+      scene: {
+        preload: preload,
+        create: create,
+        update: update
+      }
+    };
+    const game = new Phaser.Game(config);
+    let particles, emitter, title, description, discordButton;
+
+    function preload() {
+      // (eventuali asset)
+    }
+
+    function create() {
+      particles = this.add.particles('');
+      emitter = particles.createEmitter({
+        speed: { min: 20, max: 60 },
+        scale: { start: 0.3, end: 0 },
+        quantity: 1,
+        blendMode: 'ADD',
+        lifespan: { min: 800, max: 1200 },
+        tint: [0x2E8B57, 0x3CB371],
+        frequency: 100,
+        alpha: { start: 0.4, end: 0 }
+      });
+
+      title = this.add.text(400, 160, 'Tuco', {
+        fontSize: '72px',
+        fontFamily: 'Arial',
+        color: '#ffffff',
+        align: 'center',
+        shadow: { color: '#00ff00', blur: 10, fill: true }
+      }).setOrigin(0.5);
+
+      description = this.add.text(400, 260,
+        'Sistema modulare per la rigenerazione ambientale\n\n' +
+        'Tuco è un progetto di start up climate tech.\n' +
+        'Stiamo lavorando incessantemente e con passione per preparare la fase di accelerazione.\n\n' +
+        'Tuco è modulare, ibrido, sostenibile, combatte il cambiamento climatico\n' +
+        'e raccoglie dati ambientali. Crea impatto e lo fa coi propri sistemi,\n' +
+        'in modo trasparente e tracciabile.\n\n' +
+        'Siamo operativi. Seguici sul nostro canale Discord.',
+      {
+        fontSize: '18px',
+        fontFamily: 'Arial',
+        color: '#a0e6c8',
+        align: 'center'
+      }).setOrigin(0.5);
+
+      discordButton = this.add.text(400, 460, 'Unisciti alla community', {
+          fontSize: '24px',
+          fontFamily: 'Arial',
+          color: '#ffffff',
+          backgroundColor: '#2E8B57',
+          padding: { x: 16, y: 8 }
+        })
+        .setOrigin(0.5)
+        .setInteractive()
+        .on('pointerover', () => discordButton.setTint(0x00ff00))
+        .on('pointerout',  () => discordButton.clearTint())
+        .on('pointerdown', () => window.open('https://discord.gg/AJh8WnxhAY', '_blank'));
+
+      this.tweens.add({
+        targets: title,
+        alpha: 0.8,
+        yoyo: true,
+        repeat: -1,
+        duration: 1200,
+        ease: 'Sine.easeInOut',
+        onUpdate: () => {
+          title.setShadow(0, 0, '#00ff00', 5 + Math.random() * 5, true, true);
+        }
+      });
+
+      this.tweens.addCounter({
+        from: 0,
+        to: 1,
+        duration: 6000,
+        repeat: -1,
+        ease: 'Sine.easeInOut',
+        onUpdate: (tween) => {
+          const t = tween.getValue();
+          const color = Phaser.Display.Color.Interpolate.ColorWithColor(
+            Phaser.Display.Color.ValueToColor('#0f1f1f'),
+            Phaser.Display.Color.ValueToColor('#162828'),
+            1, t
+          );
+          game.config.backgroundColor = color.color;
+        }
+      });
+    }
+
+    function update() {
+      const pointer = this.input.activePointer;
+      emitter.setPosition(pointer.x, pointer.y);
+    }
+  </script>
+</body>
+</html>
